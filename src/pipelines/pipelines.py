@@ -26,9 +26,32 @@ def run_research_pipeline(topic: str) -> dict:
         "messages": [("user",
             f"Based on the following search results on the '{topic}'",
             f"Pick the most relevant URL and scrap it for deeper content\n\n",
-            f"Search results: \n{state['search_results']}"
+            f"Search results: \n{state['search_results'][:800]}"
             )]
     })
 
-    state["reader_results"] = reader_results["messages"][-1].content
-    print("\nReader agent results: ", state["reader_results"])
+    state["scrapped_content"] = reader_results["messages"][-1].content
+    print("\nReader agent results: ", state["scrapped_content"])
+
+
+    #3rd step: Writer chain
+    print("\n"+" ="*50)
+    print("Step 3: Writer chain is working...")
+    print("="*50)
+
+    research_combined = (
+        f"SEARCH RESULTS: \n{state['search_results']}\n\n",
+        f"SCRAPPED CONTENT: \n{state['scrapped_content']}"
+    )
+
+    state["report"] = writer_chain.invoke({
+        "topic": topic,
+        "research": research_combined
+    })
+
+    print(f"\n Final Report: \n{state['report']}" )
+
+
+    #4th step: Critic Chain
+    
+
