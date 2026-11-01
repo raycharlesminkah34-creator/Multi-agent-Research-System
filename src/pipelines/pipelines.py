@@ -53,5 +53,15 @@ def run_research_pipeline(topic: str) -> dict:
 
 
     #4th step: Critic Chain
-    
+    print("\n"+" ="*50)
+    print("Step 4: Critic chain is working...")
+    print("="*50)
+
+    state["feedback"] = critic_chain.invoke({
+        "report": state["report"]
+    })
+
+    print("\nCritic report: \n", state['feedback'])
+
+    return state
 
