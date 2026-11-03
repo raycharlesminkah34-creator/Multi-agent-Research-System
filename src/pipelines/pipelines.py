@@ -10,11 +10,11 @@ def run_research_pipeline(topic: str) -> dict:
 
     search_agent = build_search_agent()
     search_results = search_agent.invoke({
-        "messages": [("user", f"Find detailed, relevant and current information about {topic}")]
+        "messages": [("user", f"Search for relevant, current and detailed information on: {topic}")]
     })
     state["search_results"] = search_results["messages"][-1].content
 
-    print("\n search results", state['search_results'])
+    print(f"\n search results\n", state['search_results'])
 
     #2nd step of pipeline
     print("\n"+" ="*50)
@@ -24,8 +24,8 @@ def run_research_pipeline(topic: str) -> dict:
     reader_agent = build_reader_agent()
     reader_results = reader_agent.invoke({
         "messages": [("user",
-            f"Based on the following search results on the '{topic}'",
-            f"Pick the most relevant URL and scrap it for deeper content\n\n",
+            f"Based on the following search results on the '{topic}'\n"
+            f"Pick the most relevant URL and scrap it for deeper content\n"
             f"Search results: \n{state['search_results'][:800]}"
             )]
     })
@@ -40,7 +40,7 @@ def run_research_pipeline(topic: str) -> dict:
     print("="*50)
 
     research_combined = (
-        f"SEARCH RESULTS: \n{state['search_results']}\n\n",
+        f"SEARCH RESULTS: \n{state['search_results']}\n\n"
         f"SCRAPPED CONTENT: \n{state['scrapped_content']}"
     )
 

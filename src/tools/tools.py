@@ -12,7 +12,7 @@ from readability import Document
 load_dotenv()
 
 tavily = TavilyClient(api_key=os.getenv("TAVILY_API_KEY"))
-
+@tool
 def web_search(query: str) -> str:
     """Searches the web for relevant findings about a particular topic"""
     results = tavily.search(query=query, max_results=5)
@@ -24,6 +24,7 @@ def web_search(query: str) -> str:
     return "\n======\n".join(output)
 
 
+@tool
 def url_scrapper(url: str) -> str:
     """Downloads a webpage and extracts its main text content."""
 
